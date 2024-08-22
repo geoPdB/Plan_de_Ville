@@ -1,3 +1,8 @@
+
+#-----------------------------------------------------------------------------
+# Outils de téléchargement et de chargement du cadastre non nominatif dans un BDD Postgres
+# Auteur : Thibaud IDOUX
+#---------------------------------------------------------------------
 #20230831 : Création de la première mouture du code
 #20230920 : Refresh des 2 Materialized Views Parcelles et Batiments. Les utilisateurs sont branchés sur ces vues pour éviter toutes modifs intempestives.
 #20240725 : Mise en place
