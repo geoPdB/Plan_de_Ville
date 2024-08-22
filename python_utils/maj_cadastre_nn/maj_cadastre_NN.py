@@ -38,6 +38,9 @@ def main():
     #Connexion à la base de données
     engine = connect_bdd (name_port,name_bdd,name_host)
 
+    #initilisation lors de la 1ere utilisation
+    init_first_use(engine)
+    
     #maj du cadastre nn
     main_cadastrenn(engine,lst_insee)
 
@@ -45,7 +48,7 @@ def main():
     #maj DFI généalogie parcelle
     #print(txt_dfi.get())
     #if txt_dfi.get() != '' :
-    main_dfi(engine)
+    #main_dfi(engine)
 
     #fermeture de la connexion
     engine.dispose()
@@ -208,16 +211,17 @@ def replace_delimiters(line):
     else:
         return line
 #---------------------------------
-#   Fonction :  connexion a la bdd via psycopg2
+#   Fonction :  initilisation des tables et schema
 #--------------------------------
-#raf je pense
-def verif_connection():  
-       try:
-              conn = psycopg2.connect(dbname='bdd_iroise', port='5432', user=txt_login.get(), password=txt_mdp.get(), host='xmap.sirap.bzh')
-              conn.close
-              return True
-       except:
-              return False    
+def init_first_use(engine):  
+    # Ouvrir le fichier SQL et lire son contenu
+    with open('installation.sql', 'r') as file:
+        sql_script = file.read()
+
+    # Exécuter le script SQL
+    with engine.connect() as connection:
+        connection.execute(text(sql_script))
+        connection.commit()
 
 #extrait uniquement le fichier du finistère plutot que de tout dezipper
 def extract_file_containing_dep029(zip_file_path, dir_export):
